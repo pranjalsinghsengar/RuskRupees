@@ -16,6 +16,7 @@
     "react-native-flip-card": "^3.5.7",
     "react-native-linking": "^0.0.0",
     "react-native-popup-dialog": "^0.18.3",
+    "react-native-reanimated": "^3.6.1",
     "redux": "^5.0.0"
   },
   "devDependencies": {

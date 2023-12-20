@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import FlipCards from './FlipCards';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView>
-      <StatusBar />
+    // <SafeAreaView>
+    // <StatusBar />
+    <View style={{flex: 1}}>
       <FlipCards />
-    </SafeAreaView>
+    </View>
+    // </SafeAreaView>
   );
 }
 
