@@ -1,10 +1,13 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
+import {RuskContext} from './Context';
 
 const Invite = () => {
+  const {RefrenceId} = useContext(RuskContext);
+  console.log(RefrenceId , "RefrenceId")
   return (
     <View>
-      <Text>Invite</Text>
+      <Text>Invite : {RefrenceId}</Text>
     </View>
   );
 };

@@ -1,12 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Download from './Download';
 import DownloadCard from './DownloadCard';
 import OnboardingScreens from './OnboardingScreens';
+import {RuskContext} from './Context';
 
-const AppDownload = ({isFlipped, remainingTime, setCoinWallet}) => {
+const AppDownload = () => {
+  const {isFlipped, remainingTime} = useContext(RuskContext);
+
   const [timer, settimer] = useState(null);
-  const [downloadDone, setdownloadDone] = useState(false);
 
   useEffect(() => {
     if (remainingTime !== null) {
@@ -43,8 +45,7 @@ const AppDownload = ({isFlipped, remainingTime, setCoinWallet}) => {
         formatTime={formatTime}
         Teenpatti="https://h25.in/gold/us8t7"
         // setShowOnboarding={setShowOnboarding}
-      /> 
-      
+      />
     </View>
   );
 };

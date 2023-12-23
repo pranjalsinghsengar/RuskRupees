@@ -8,7 +8,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {FIREBASE_AUTH} from './fireConfig';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
@@ -20,6 +20,13 @@ import {
   statusCodes,
   type OneTapUser,
 } from '@react-native-google-signin/google-signin';
+import {RuskContext} from './Context';
+import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+
+// import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+// import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
 
 // GoogleSignin.configure({
 //   webClientId:
@@ -28,8 +35,12 @@ import {
 
 // import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-const LognPage = ({setUserInfo}) => {
+const LognPage = ({navigation}) => {
   // const Stack = createNativeStackNavigator();
+  const {userInfo, coinWallet, setUserInfo, updateUser, InviteId, setUserUID} =
+    useContext(RuskContext);
+
+  const provider = new GoogleAuthProvider();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,29 +52,105 @@ const LognPage = ({setUserInfo}) => {
         '744554475013-iejli0h4t7qhllcrmvj7gofdlgbdtliq.apps.googleusercontent.com',
     });
   }, []);
+
+  // const handleGoogleSignIn = async () => {
+  //   await signInWithPopup(firebseAuth, provider)
+  //     .then(result => {
+  //       // This gives you a Google Access Token. You can use it to access the Google API.
+  //       const credential = GoogleAuthProvider.credentialFromResult(result);
+  //       const token = credential.accessToken;
+  //       // The signed-in user info.
+  //       const user = result.user;
+  //       if (user) {
+  //         setUserInfo(user);
+  //         navigation.navigate('Window');
+  //       }
+
+  //       // IdP data available using getAdditionalUserInfo(result)
+  //       // ...
+  //     })
+  //     .catch(error => {
+  //       // Handle Errors here.
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       // The email of the user's account used.
+  //       const email = error.customData.email;
+  //       // The AuthCredential type that was used.
+  //       const credential = GoogleAuthProvider.credentialFromError(error);
+  //       // ...
+  //     });
+  // };
+
+  const handle = () => {
+    navigation.navigate('Window');
+  };
   const handleGoogleSignIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      const Info = await GoogleSignin.signIn();
-      const {idToken} = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices();
+      const {idToken, ...Info} = await GoogleSignin.signIn(); // Use object destructuring to get idToken and the rest of the Info
 
-      setUserInfo({
-        user: {
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      const userCredential = await auth().signInWithCredential(
+        googleCredential,
+      );
+
+      // Access the UID from the userCredential
+      const uid = userCredential.user.uid;
+
+      const userSnapshot = await database().ref(`Users/${uid}`).once('value');
+      const userExists = await userSnapshot.val();
+
+      let userData;
+      if (!userExists) {
+        await database().ref(`Users/${uid}`).set({
           email: Info.user.email,
           id: Info.user.id,
+          uid: uid,
           givenName: Info.user.givenName,
           familyName: Info.user.familyName,
           photo: Info.user.photo,
           name: Info.user.name,
-        },
-      });
+          inviteID: InviteId,
+        });
+        await database().ref(`Users/${uid}/Wallet`).set({
+          coins: coinWallet,
+        });
+        // Set userData for updating local state
+        userData = {
+          email: Info.user.email,
+          id: Info.user.id,
+          uid: Info.uid,
+          givenName: Info.user.givenName,
+          familyName: Info.user.familyName,
+          photo: Info.user.photo,
+          name: Info.user.name,
+        };
+      } else {
+        // If the user already exists, update the existing record
+        // await database().ref(`Users/${uid}`).update({
+        //   email: Info.user.email,
+        //   id: Info.user.id,
+        //   givenName: Info.user.givenName,
+        //   familyName: Info.user.familyName,
+        //   photo: Info.user.photo,
+        //   name: Info.user.name,
+        //   // inviteID: InviteId,
+        // });
 
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // return auth().signInWithCredential(googleCredential);
-      // console.log(Info.user);
-      // console.log({idToken});
-      // Create a Google credential with the token
-      // setState({userInfo});
+        // Fetch the updated user data from the database
+        userData = (await database().ref(`Users/${uid}`).once('value')).val();
+      }
+      setUserUID(uid);
+
+      await navigation.navigate('Window');
+
+      console.log('Google Sign-In successful');
+      console.log('googleCredential ', googleCredential);
+      console.log('>>>uid ', uid);
+      console.log('>>>user ', userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -75,13 +162,11 @@ const LognPage = ({setUserInfo}) => {
         // some other error happened
       }
     }
-
-    // Implement the logic for Google sign-in here
-    // This might involve calling an authentication service or navigating to a Google sign-in page
-    // console.log('Google Sign In Pressed');
   };
 
-  // const auth = FIREBASE_AUTH;
+  // useEffect(() => {
+  //   navigation.navigate('Window');
+  // }, [userInfo]);
 
   return (
     <View
@@ -146,6 +231,8 @@ const LognPage = ({setUserInfo}) => {
             </TouchableOpacity> */}
 
             <GoogleSigninButton
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
               onPress={
                 () => handleGoogleSignIn()
                 // .then(() => setsuccessFully(true))

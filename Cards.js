@@ -1,17 +1,11 @@
 // Cards.js
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Image, StyleSheet, Text} from 'react-native';
 import FlipCard from 'react-native-flip-card';
+import {RuskContext} from './Context';
 
-const Cards = ({isFlipped, setIsFlipped, onFlipComplete}) => {
-  //   const [randomNumber, setRandomNumber] = useState(null);
-
-  //   const flipCard = () => {
-  //     setIsFlipped(!isFlipped);
-  //     if (onFlipComplete) {
-  //       onFlipComplete(randomNumber);
-  //     }
-  //   };
+const Cards = () => {
+  const {isFlipped} = useContext(RuskContext);
 
   return (
     <FlipCard

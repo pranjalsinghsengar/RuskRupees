@@ -1,28 +1,47 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import FlipCards from './FlipCards';
+import {Modal} from '@mui/base';
+import {RuskContext} from './Context';
+import Invite from './Invite';
 
-const Window = ({
-  lastClickTime,
-  setLastClickTime,
-  coinWallet,
-  setCoinWallet,
-  currentTab,
-  setCurrentTab,
-  remainingTime,
-  setRemainingTime,
-  setShowCooldownModal,
-  userInfo,
-}) => {
+const Window = ({navigation, setOpenprofile}) => {
+  const {
+    userInfo,
+    setUserInfo,
+    currentTab,
+    setCurrentTab,
+    coinWallet,
+    setCoinWallet,
+    remainingTime,
+    showCooldownModal,
+    setShowCooldownModal,
+  } = useContext(RuskContext);
+
   const formatTime = time => {
     const minutes = Math.floor(time / 60000);
     const seconds = Math.floor((time % 60000) / 1000);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
-  const imgeUrl = userInfo.user.photo;
-  console.log(imgeUrl);
+
+  // useEffect(() => {
+  //   // Redirect to the login screen if userInfo is not available
+  //   if (!userInfo) {
+  //     navigation.navigate('Login');
+  //   } else {
+
+  //   }
+  // }, [userInfo, navigation]);
+
+  const imageUrl = userInfo ? userInfo.photo : null;
+  // console.log(userInfo)
+  // console.log('imageUrl', userInfo.user);
   // console.log('Image ', AboutUser.user);
-  const OpenAccountHandler = () => {};
+  const OpenAccountHandler = () => {
+    // setOpenprofile(true);
+    navigation.navigate('Profile');
+  };
+  // console.log('datafrom backend ', userInfo);
   return (
     <View
       style={{
@@ -30,7 +49,6 @@ const Window = ({
         paddingHorizontal: 15,
         paddingTop: 15,
         backgroundColor: '#efeff0',
-        // color: 'black',
       }}>
       <View
         style={{
@@ -44,7 +62,7 @@ const Window = ({
           style={{width: 100, height: 50}}
         />
         {/* </Text> */}
-        <View style={{flexDirection: 'row', gap:10}}>
+        <View style={{flexDirection: 'row', gap: 10}}>
           <View
             style={{
               padding: 5,
@@ -72,7 +90,7 @@ const Window = ({
             }}
             onPress={OpenAccountHandler}>
             <Image
-              source={{uri: imgeUrl}}
+              source={{uri: imageUrl}}
               style={{width: '100%', height: '100%'}}
             />
           </TouchableOpacity>
@@ -104,7 +122,9 @@ const Window = ({
             currentTab === 2 && styles.SelectionTabBar,
             styles.tabBarText,
           ]}
-          onPress={() => setCurrentTab(2)}>
+          onPress={() => {
+            setCurrentTab(2);
+          }}>
           <Text style={styles.textColor}>Invites</Text>
         </TouchableOpacity>
 
@@ -118,18 +138,30 @@ const Window = ({
         </TouchableOpacity>
       </View>
 
-      {currentTab === 1 && (
-        <FlipCards
-          setCoinWallet={setCoinWallet}
-          setCurrentTab={setCurrentTab}
-          remainingTime={remainingTime}
-          setRemainingTime={setRemainingTime}
-          lastClickTime={lastClickTime}
-          setLastClickTime={setLastClickTime}
-          formatTime={formatTime}
-          setShowCooldownModal={setShowCooldownModal}
-        />
-      )}
+      {currentTab === 1 && <FlipCards />}
+      {currentTab === 2 && <Invite />}
+
+      <Modal
+        transparent={true}
+        visible={showCooldownModal}
+        animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalContent, {width: '80%'}]}>
+            <Text style={{fontSize: 20}}>
+              Try after{' '}
+              <Text style={{fontSize: 30, color: 'red'}}>
+                {' '}
+                {formatTime(remainingTime)}
+              </Text>{' '}
+            </Text>
+            <TouchableOpacity
+              onPress={() => setShowCooldownModal(false)}
+              style={styles.closeModalButton}>
+              <Text style={{paddingHorizontal: 30}}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -189,5 +221,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  closeModalButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'lightblue',
+    borderRadius: 5,
   },
 });

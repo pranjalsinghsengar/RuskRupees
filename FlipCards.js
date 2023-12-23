@@ -1,5 +1,5 @@
 // FlipCards.js
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,18 +11,27 @@ import {
 } from 'react-native';
 import Cards from './Cards';
 import AppDownload from './AppDownload';
+import {RuskContext} from './Context';
 
-const FlipCards = ({
-  setCoinWallet,
-  setCurrentTab,
-  remainingTime,
-  setRemainingTime,
-  lastClickTime,
-  setLastClickTime,
-  formatTime,
-  setShowCooldownModal,
-}) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+const FlipCards = ({navigation}) => {
+  const {
+    formatTime,
+    userInfo,
+    setUserInfo,
+    currentTab,
+    setCurrentTab,
+    coinWallet,
+    setCoinWallet,
+    remainingTime,
+    showCooldownModal,
+    setShowCooldownModal,
+    setLastClickTime,
+    lastClickTime,
+    setRemainingTime,
+    isFlipped,
+    setIsFlipped,
+  } = useContext(RuskContext);
+
   // const [showModal, setShowModal] = useState(false);
   const [randomNumber, setRandomNumber] = useState(null);
   const [showCards, setshowCards] = useState(false);
