@@ -30,10 +30,11 @@ const FlipCards = ({navigation}) => {
     setRemainingTime,
     isFlipped,
     setIsFlipped,
+    randomNumber,
+    setRandomNumber,
   } = useContext(RuskContext);
 
   // const [showModal, setShowModal] = useState(false);
-  const [randomNumber, setRandomNumber] = useState(null);
   const [showCards, setshowCards] = useState(false);
 
   const toggleFlip = () => {
@@ -53,11 +54,6 @@ const FlipCards = ({navigation}) => {
     }
   };
 
-  const onFlipComplete = num => {
-    setRandomNumber(num);
-    // setShowModal(true);
-  };
-
   const closeModal = () => {
     setshowCards(false);
     // setShowModal(false);
@@ -75,9 +71,9 @@ const FlipCards = ({navigation}) => {
     }
   }, [isFlipped]);
 
-  useEffect(() => {
-    setCoinWallet(prevCoins => prevCoins + randomNumber);
-  }, [randomNumber]);
+  // useEffect(() => {
+  //   setCoinWallet(prevCoins => prevCoins + randomNumber);
+  // }, [randomNumber]);
 
   return (
     <ScrollView>
@@ -120,21 +116,9 @@ const FlipCards = ({navigation}) => {
               position: 'absolute',
             }}
           /> */}
-          <Cards
-            setIsFlipped={setIsFlipped}
-            isFlipped={isFlipped}
-            onFlipComplete={onFlipComplete}
-          />
-          <Cards
-            setIsFlipped={setIsFlipped}
-            isFlipped={isFlipped}
-            onFlipComplete={onFlipComplete}
-          />
-          <Cards
-            setIsFlipped={setIsFlipped}
-            isFlipped={isFlipped}
-            onFlipComplete={onFlipComplete}
-          />
+          <Cards setIsFlipped={setIsFlipped} isFlipped={isFlipped} />
+          <Cards setIsFlipped={setIsFlipped} isFlipped={isFlipped} />
+          <Cards setIsFlipped={setIsFlipped} isFlipped={isFlipped} />
         </View>
 
         <TouchableOpacity

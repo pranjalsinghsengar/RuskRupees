@@ -228,24 +228,40 @@ const RuskProvider = ({children}) => {
   // =================================================================================================================================================
 
   // console.log('userChanged ', user);
+  const [randomNumber, setRandomNumber] = useState(null);
+
   useEffect(() => {
-    console.log('Empty UserInfo Running');
-    if (!userInfo) {
+    // console.log('Empty UserInfo Running');
+    if (userUID) {
       database()
         .ref(`Users/${userUID}`)
-        .once('value')
-        .then(snapshot => {
+        .on('value', snapshot => {
           const dataFetch = snapshot.val();
           setUserInfo(dataFetch);
           setCoinWallet(dataFetch.Wallet.coins);
         });
+      console.log('ON runnning ');
+
+      if (randomNumber !== null) {
+        let UpdateCoins = coinWallet + randomNumber;
+        database().ref(`Users/${userUID}/Wallet`).update({
+          coins: UpdateCoins,
+        });
+        console.log('UpdateCoins', UpdateCoins);
+        console.log('updated Coins Done');
+        setRandomNumber(null);
+      }
+      return () => database().ref(`Users/${userUID}`).off('value');
     }
-  }, [userUID]);
+  }, [userUID, randomNumber]);
 
   // console.log('userUID', userUID);
-  console.log('=>userInfo', userInfo);
+  // console.log('=>userInfo', userInfo);
   console.log('>>>>>CoinWallet', userInfo && userInfo.Wallet.coins);
+  console.log('RandomNumber ', randomNumber);
+  //  Save the Update the Coin when it Fliped
 
+  // useEffect(() => {});
   return (
     <RuskContext.Provider
       value={{
@@ -269,6 +285,8 @@ const RuskProvider = ({children}) => {
         userUID,
         setUserUID,
         InviteId,
+        randomNumber,
+        setRandomNumber,
         // updateUser,
       }}>
       {children}

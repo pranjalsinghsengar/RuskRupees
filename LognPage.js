@@ -145,12 +145,12 @@ const LognPage = ({navigation}) => {
       }
       setUserUID(uid);
 
-      await navigation.navigate('Window');
+      navigation.navigate('Window');
 
-      console.log('Google Sign-In successful');
-      console.log('googleCredential ', googleCredential);
-      console.log('>>>uid ', uid);
-      console.log('>>>user ', userInfo);
+      // console.log('Google Sign-In successful');
+      // console.log('googleCredential ', googleCredential);
+      // console.log('>>>uid ', uid);
+      // console.log('>>>user ', userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow

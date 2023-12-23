@@ -13,8 +13,14 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Uuid from './Uuid';
 
 const Profile = ({navigation, user}) => {
-  const {setUserUID, userInfo, coinWallet, setUser, setUserInfo} =
-    useContext(RuskContext);
+  const {
+    setUserUID,
+    userInfo,
+    coinWallet,
+    setUser,
+    setUserInfo,
+    setRemainingTime,
+  } = useContext(RuskContext);
 
   const imgeUrl = userInfo ? userInfo.photo : null;
 
@@ -22,6 +28,7 @@ const Profile = ({navigation, user}) => {
     try {
       await GoogleSignin.signOut();
       await setUserInfo(null);
+      setRemainingTime(null);
       await setUserUID(null); // Remember to remove the user from your app's state as well
       await navigation.navigate('Login');
     } catch (error) {
