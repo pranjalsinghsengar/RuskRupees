@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "744554475013",
+    "project_id": "ruskrupees",
+    "storage_bucket": "ruskrupees.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744554475013:android:3d64ecb183d4ee4fe3f66c",
+        "android_client_info": {
+          "package_name": "com.ruskrupees"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744554475013-6k0lo9avu4obhka2cmr9m6ugh1nuh14e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruskrupees",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "744554475013-iejli0h4t7qhllcrmvj7gofdlgbdtliq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmZGJ_HHNXuQ-EAYThXHbMPK_9u4ACpug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744554475013-iejli0h4t7qhllcrmvj7gofdlgbdtliq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

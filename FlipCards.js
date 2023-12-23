@@ -1,147 +1,259 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+// FlipCards.js
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  ScrollView,
+} from 'react-native';
+import Cards from './Cards';
+import AppDownload from './AppDownload';
 
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
+const FlipCards = ({
+  setCoinWallet,
+  setCurrentTab,
+  remainingTime,
+  setRemainingTime,
+  lastClickTime,
+  setLastClickTime,
+  formatTime,
+  setShowCooldownModal,
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const [randomNumber, setRandomNumber] = useState(null);
+  const [showCards, setshowCards] = useState(false);
 
-import FlipCard from 'react-native-flip-card';
-
-const FlipCards = () => {
-  const [card1Flipped, setCard1Flipped] = useState(false);
-  const [walletCoins, setWalletCoins] = useState(0);
-
-  // const frontAnimatedStyle = useAnimatedStyle(() => {
-  //   const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
-  //   return {
-  //     transform: [
-  //       {
-  //         rotateY: withTiming(`${spinVal}deg`, { duration: 500 }),
-  //       },
-  //     ],
-  //   };
-  // }, []);
-  const spin = useSharedValue(0);
-
-  const cardRefs = [useRef(), useRef()]; // Add refs for each card
-
-  const flipCardHandler = (cardNumber, index) => {
-    spin.value = withSpring(spin.value === 0 ? 180 : 0);
-
-    // Access the Animated.View component using refs and call the flip method
-    cardRefs[index].current.flip();
-
-    // Show the value of the clicked card in an alert
-    Alert.alert(`Card ${cardNumber} clicked`);
+  const toggleFlip = () => {
+    const currentTime = new Date().getTime();
+    if (currentTime - lastClickTime > 40000) {
+      // If more than 1.5 hours have passed since the last click
+      setIsFlipped(!isFlipped);
+      setTimeout(() => {
+        setshowCards(true);
+      }, 500);
+      setLastClickTime(currentTime);
+      setRemainingTime(null);
+    } else {
+      // Display a message or take appropriate action for cooldown period
+      setShowCooldownModal(true);
+      console.log('You need to wait for the cooldown period to end.');
+    }
   };
 
-  const frontAnimatedStyle = useAnimatedStyle(() => {
-    const spinVal = spin.value;
-    return {
-      transform: [{rotateY: `${spinVal}deg`}],
-    };
-  });
+  const onFlipComplete = num => {
+    setRandomNumber(num);
+    // setShowModal(true);
+  };
 
-  const backAnimatedStyle = useAnimatedStyle(() => {
-    const spinVal = spin.value;
-    return {
-      transform: [{rotateY: `${spinVal + 180}deg`}],
-    };
-  });
+  const closeModal = () => {
+    setshowCards(false);
+    // setShowModal(false);
+    setTimeout(() => {
+      setIsFlipped(false);
+      setRemainingTime(40000); // 1.5 hours in milliseconds
+    }, 700);
+  };
+
+  useEffect(() => {
+    if (isFlipped) {
+      // Generate a random number between 1 and 10
+      const randomNum = Math.floor(Math.random() * 10) + 1;
+      setRandomNumber(randomNum);
+    }
+  }, [isFlipped]);
+
+  useEffect(() => {
+    setCoinWallet(prevCoins => prevCoins + randomNumber);
+  }, [randomNumber]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.walletContainer}>
-        <Text style={styles.walletText}>Coins:</Text>
-        <Text style={styles.walletText}>{walletCoins}</Text>
-      </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={{flexDirection: 'row', gap: 15}}>
+          {/* Youtube Link */}
+          <TouchableOpacity>
+            <Image
+              source={require('./assets/invite.png')}
+              style={styles.InviteImg}
+            />
+          </TouchableOpacity>
 
-      <View style={styles.cardsContainer}>
-        <Animated.View style={[styles.front, frontAnimatedStyle]}>
-          <Text>Front View</Text>
-        </Animated.View>
-        <Animated.View style={[styles.back, backAnimatedStyle]}>
-          <Text>Back View</Text>
-        </Animated.View>
-      </View>
+          {/* InviteLink */}
 
-      {/* <View style={styles.cardsContainer}>
-        <Animated.View style={styles.front}>
-          <Text>Front View</Text>
-        </Animated.View>
-        <Animated.View style={styles.back}>
-          <Text>Back View</Text>
-        </Animated.View>
-      </View> */}
-    </View>
+          <TouchableOpacity onPress={() => setCurrentTab(2)}>
+            <Image
+              source={require('./assets/invite.png')}
+              style={styles.InviteImg}
+            />
+          </TouchableOpacity>
+        </View>
+        <Image
+          source={require('./assets/Frame766.png')}
+          style={{width: 356, height: 80, marginTop: 10}}
+        />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 10,
+            position: 'relative',
+          }}>
+          {/* <Image
+            source={require('./assets/Frame765.png')}
+            style={{
+              width: '100%',
+              height: 'auto',
+              marginTop: 10,
+              position: 'absolute',
+            }}
+          /> */}
+          <Cards
+            setIsFlipped={setIsFlipped}
+            isFlipped={isFlipped}
+            onFlipComplete={onFlipComplete}
+          />
+          <Cards
+            setIsFlipped={setIsFlipped}
+            isFlipped={isFlipped}
+            onFlipComplete={onFlipComplete}
+          />
+          <Cards
+            setIsFlipped={setIsFlipped}
+            isFlipped={isFlipped}
+            onFlipComplete={onFlipComplete}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={!isFlipped ? toggleFlip : null}>
+          <Text style={styles.buttonText}>
+            Flip{' '}
+            {remainingTime !== null && remainingTime > 0 && (
+              <Text>in: {formatTime(remainingTime)}</Text>
+            )}
+          </Text>
+        </TouchableOpacity>
+
+        {showCards && (
+          <View style={styles.congratsContainer}>
+            <View style={styles.InnercongratsContainer}>
+              <Text style={styles.congratsText}>Congratulations!</Text>
+              <Text style={styles.randomNumberText}>
+                You got {randomNumber}
+              </Text>
+              <TouchableOpacity
+                style={styles.closeContainer}
+                onPress={closeModal}>
+                <Text>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+      <Text style={{fontSize: 25}}>Download app to earn more... </Text>
+      <AppDownload
+        isFlipped={isFlipped}
+        remainingTime={remainingTime}
+        setCoinWallet={setCoinWallet}
+      />
+    </ScrollView>
   );
 };
 
-export default FlipCards;
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // margin: 30,
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-
-  front: {
-    height: 400,
-    width: 250,
-    backgroundColor: '#D8D9CF',
-    borderRadius: 16,
+  InviteImg: {
+    width: 100,
+    height: 150,
+  },
+  heading: {
+    marginBottom: 30,
+    color: 'green',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'grey',
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  modalCloseButton: {
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  congratsContainer: {
     position: 'absolute',
-    alignItems: 'center',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'center',
-  },
-  back: {
-    height: 400,
-    width: 250,
-    backgroundColor: '#FF8787',
-    borderRadius: 16,
-    backfaceVisibility: 'hidden',
     alignItems: 'center',
-    justifyContent: 'center',
+    // backgroundColor:""
   },
+  InnercongratsContainer: {
+    backgroundColor: '#efeff0',
+    paddingVertical: 200,
+    paddingHorizontal: 70,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
 
-  walletContainer: {
+    elevation: 12,
+  },
+  congratsText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'red',
+  },
+  randomNumberText: {
+    fontSize: 18,
+    color: 'red',
+  },
+  closeContainer: {
     position: 'absolute',
-    top: 10,
-    right: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  walletText: {
-    marginRight: 5,
-  },
-  cardsContainer: {
-    width: '85%',
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 5,
-  },
-  flipCardContainer: {
-    height: 300,
-    // backgroundColor: 'green',
-    borderRadius: 10,
-  },
-  frontCardDetails: {
-    flex: 1,
+    bottom: 50,
+    right: 0,
+    left: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'blue',
-    borderRadius: 15,
-  },
-  backCardDetails: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
-    borderRadius: 15,
   },
 });
+
+export default FlipCards;
