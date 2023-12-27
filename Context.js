@@ -228,7 +228,8 @@ const RuskProvider = ({children}) => {
   // =================================================================================================================================================
 
   // console.log('userChanged ', user);
-  const [randomNumber, setRandomNumber] = useState(null);
+  const [randomNumber, setRandomNumber] = useState(0);
+  const [AppDownloadCoins, setAppDownloadCoins] = useState(0);
 
   useEffect(() => {
     // console.log('Empty UserInfo Running');
@@ -242,23 +243,51 @@ const RuskProvider = ({children}) => {
         });
       console.log('ON runnning ');
 
-      if (randomNumber !== null) {
-        let UpdateCoins = coinWallet + randomNumber;
+      if (randomNumber > 0 || AppDownloadCoins > 0) {
+        let numericCoinWallet = parseFloat(coinWallet);
+        let numericRandomNumber = parseFloat(randomNumber);
+        let numericAppDownloadCoins = parseFloat(AppDownloadCoins);
+
+        // let UpdateCoins = coinWallet + randomNumber + AppDownloadCoins;
+        let UpdateCoins =
+          numericCoinWallet + numericRandomNumber + numericAppDownloadCoins;
+
         database().ref(`Users/${userUID}/Wallet`).update({
           coins: UpdateCoins,
         });
-        console.log('UpdateCoins', UpdateCoins);
+        console.log(
+          'UpdateCoins',
+          UpdateCoins,
+          'AppDownloadCoins ',
+          AppDownloadCoins,
+        );
+        console.log('CoinWallet', numericCoinWallet);
+        console.log(
+          'RandomNumber',
+          numericRandomNumber,
+          'AppDownloadCoins',
+          numericAppDownloadCoins,
+        );
+        console.log('Updated Coins', UpdateCoins);
         console.log('updated Coins Done');
-        setRandomNumber(null);
+
+        // Doing NulL
+        setAppDownloadCoins(0);
       }
       return () => database().ref(`Users/${userUID}`).off('value');
     }
-  }, [userUID, randomNumber]);
+  }, [userUID, randomNumber, AppDownloadCoins]);
 
   // console.log('userUID', userUID);
   // console.log('=>userInfo', userInfo);
   console.log('>>>>>CoinWallet', userInfo && userInfo.Wallet.coins);
-  console.log('RandomNumber ', randomNumber);
+  console.log(
+    'RandomNumber ',
+    randomNumber,
+    'AppDownloadCoins ',
+    AppDownloadCoins,
+  );
+
   //  Save the Update the Coin when it Fliped
 
   // useEffect(() => {});
@@ -288,6 +317,8 @@ const RuskProvider = ({children}) => {
         randomNumber,
         setRandomNumber,
         // updateUser,
+        AppDownloadCoins,
+        setAppDownloadCoins,
       }}>
       {children}
     </RuskContext.Provider>

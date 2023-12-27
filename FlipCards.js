@@ -60,6 +60,7 @@ const FlipCards = ({navigation}) => {
     setTimeout(() => {
       setIsFlipped(false);
       setRemainingTime(40000); // 1.5 hours in milliseconds
+      setRandomNumber(0);
     }, 700);
   };
 
@@ -74,7 +75,7 @@ const FlipCards = ({navigation}) => {
   // useEffect(() => {
   //   setCoinWallet(prevCoins => prevCoins + randomNumber);
   // }, [randomNumber]);
-
+  let numericRandomNumber = parseFloat(randomNumber);
   return (
     <ScrollView>
       <View style={styles.container}>

@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import OnboardingScreens from './OnboardingScreens';
 import Swiper from 'react-native-swiper';
+import {RuskContext} from './Context';
 
-const DownloadCard = ({isFlipped, Rupess, timer, Teenpatti}) => {
+const DownloadCard = ({Sign, isFlipped, Rupess, timer, Teenpatti}) => {
+  const {setAppDownloadCoins} = useContext(RuskContext);
   const [Texting, setTexting] = useState(false);
   const handleDownloadPress = async () => {
     // const playStoreLink = {Teenpatti};
@@ -29,6 +31,8 @@ const DownloadCard = ({isFlipped, Rupess, timer, Teenpatti}) => {
   };
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  let numericRupess = parseFloat(Rupess);
+
   const handleNext = async () => {
     // Logic to handle the next button click
     console.log(currentIndex);
@@ -37,6 +41,7 @@ const DownloadCard = ({isFlipped, Rupess, timer, Teenpatti}) => {
     }
     if (currentIndex === 2) {
       await Linking.openURL(Teenpatti);
+      setAppDownloadCoins(numericRupess);
       setShowOnboarding(false);
       setTexting(true);
     }
@@ -85,7 +90,10 @@ const DownloadCard = ({isFlipped, Rupess, timer, Teenpatti}) => {
           <Text>Updating Soon</Text>
         ) : (
           <>
-            <Text style={{fontSize: 30}}>{Rupess}</Text>
+            <Text style={{fontSize: 30}}>
+              {numericRupess}
+              {Sign}
+            </Text>
             {/*  */}
             {/* {timer !== null && timer < 0 ? ( */}
             <Image

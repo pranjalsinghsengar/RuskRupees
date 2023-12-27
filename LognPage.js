@@ -80,30 +80,40 @@ const LognPage = ({navigation}) => {
   //     });
   // };
 
-  const handle = () => {
-    navigation.navigate('Window');
-  };
+  // const handle = () => {
+  //   navigation.navigate('Window');
+  // };
+
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const {idToken, ...Info} = await GoogleSignin.signIn(); // Use object destructuring to get idToken and the rest of the Info
+      console.log('Step 1 Done');
 
       // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const googleCredential = await auth.GoogleAuthProvider.credential(
+        idToken,
+      );
+      console.log('Step 2 Done');
 
       // Sign-in the user with the credential
       const userCredential = await auth().signInWithCredential(
         googleCredential,
       );
+      console.log('Step 3 Done');
 
       // Access the UID from the userCredential
       const uid = userCredential.user.uid;
+      console.log('Step 4 Done - UID', uid);
 
       const userSnapshot = await database().ref(`Users/${uid}`).once('value');
       const userExists = await userSnapshot.val();
+      console.log('Step 5 Done 0- userExists', userExists);
 
       let userData;
       if (!userExists) {
+        console.log('userExists');
+
         await database().ref(`Users/${uid}`).set({
           email: Info.user.email,
           id: Info.user.id,
@@ -121,7 +131,7 @@ const LognPage = ({navigation}) => {
         userData = {
           email: Info.user.email,
           id: Info.user.id,
-          uid: Info.uid,
+          uid: uid,
           givenName: Info.user.givenName,
           familyName: Info.user.familyName,
           photo: Info.user.photo,
@@ -129,23 +139,24 @@ const LognPage = ({navigation}) => {
         };
       } else {
         // If the user already exists, update the existing record
-        // await database().ref(`Users/${uid}`).update({
-        //   email: Info.user.email,
-        //   id: Info.user.id,
-        //   givenName: Info.user.givenName,
-        //   familyName: Info.user.familyName,
-        //   photo: Info.user.photo,
-        //   name: Info.user.name,
-        //   // inviteID: InviteId,
-        // });
+        await database().ref(`Users/${uid}`).update({
+          email: Info.user.email,
+          id: Info.user.id,
+          uid: uid,
+          givenName: Info.user.givenName,
+          familyName: Info.user.familyName,
+          photo: Info.user.photo,
+          name: Info.user.name,
+          //   // inviteID: InviteId,
+        });
 
         // Fetch the updated user data from the database
-        userData = (await database().ref(`Users/${uid}`).once('value')).val();
+        // userData = (await database().ref(`Users/${uid}`).once('value')).val();
       }
       setUserUID(uid);
+      console.log('Start Navigating...');
 
-      navigation.navigate('Window');
-
+      navigation.navigate('Referral');
       // console.log('Google Sign-In successful');
       // console.log('googleCredential ', googleCredential);
       // console.log('>>>uid ', uid);

@@ -20,6 +20,10 @@ const Profile = ({navigation, user}) => {
     setUser,
     setUserInfo,
     setRemainingTime,
+    setRandomNumber,
+    setAppDownloadCoins,
+    setInviteId,
+    setCoinWallet,
   } = useContext(RuskContext);
 
   const imgeUrl = userInfo ? userInfo.photo : null;
@@ -27,10 +31,14 @@ const Profile = ({navigation, user}) => {
   const SignOutHandle = async () => {
     try {
       await GoogleSignin.signOut();
+      await navigation.navigate('Login');
       await setUserInfo(null);
       setRemainingTime(null);
-      await setUserUID(null); // Remember to remove the user from your app's state as well
-      await navigation.navigate('Login');
+      setUserUID(null);
+      setRandomNumber(0);
+      setAppDownloadCoins(0);
+      setCoinWallet(0);
+      setInviteId(null);
     } catch (error) {
       console.error(error);
     }

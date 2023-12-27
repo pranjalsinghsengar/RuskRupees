@@ -26,6 +26,7 @@ import {RuskContext, RuskProvider} from './Context';
 import Window from './Window';
 import Profile from './Profile';
 import Invite from './Invite';
+import Referral from './Referral';
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -41,6 +42,11 @@ function App(): React.JSX.Element {
             name="Login"
             component={LognPage}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Referral"
+            component={Referral}
+            // options={{headerShown: false}}
           />
           <Stack.Screen
             name="Window"

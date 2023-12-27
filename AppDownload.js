@@ -40,7 +40,8 @@ const AppDownload = () => {
       {/* <Text>sdfsdf{formatTime(timer)}</Text> */}
       <DownloadCard
         isFlipped={isFlipped}
-        Rupess="3.2₹"
+        Rupess="3.2"
+        Sign="₹"
         timer={timer}
         formatTime={formatTime}
         Teenpatti="https://h25.in/gold/us8t7"
