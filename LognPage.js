@@ -18,7 +18,6 @@ import {
   GoogleSigninButton,
   GoogleOneTapSignIn,
   statusCodes,
-  type OneTapUser,
 } from '@react-native-google-signin/google-signin';
 import {RuskContext} from './Context';
 import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
