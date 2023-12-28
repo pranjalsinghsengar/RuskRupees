@@ -34,8 +34,8 @@ function App(): React.JSX.Element {
   return (
     // <SafeAreaView>
     // <StatusBar />
-    <RuskProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      <RuskProvider>
         {/* <View style={styles.ScrollC}> */}
         <Stack.Navigator>
           <Stack.Screen
@@ -46,7 +46,7 @@ function App(): React.JSX.Element {
           <Stack.Screen
             name="Referral"
             component={Referral}
-            // options={{headerShown: false}}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="Window"
@@ -96,8 +96,8 @@ function App(): React.JSX.Element {
 
         {/* <OnboardingScreens /> */}
         {/* </View> */}
-      </NavigationContainer>
-    </RuskProvider>
+      </RuskProvider>
+    </NavigationContainer>
   );
 }
 

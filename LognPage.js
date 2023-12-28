@@ -127,6 +127,9 @@ const LognPage = ({navigation}) => {
         await database().ref(`Users/${uid}/Wallet`).set({
           coins: coinWallet,
         });
+        await database()
+          .ref(`Users/${uid}/InviteBy`)
+          .set({inviteStatus: false});
         // Set userData for updating local state
         userData = {
           email: Info.user.email,
@@ -156,7 +159,6 @@ const LognPage = ({navigation}) => {
       setUserUID(uid);
       console.log('Start Navigating...');
 
-      navigation.navigate('Referral');
       // console.log('Google Sign-In successful');
       // console.log('googleCredential ', googleCredential);
       // console.log('>>>uid ', uid);

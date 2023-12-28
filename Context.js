@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import {v4 as uuid} from 'uuid';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useNavigation} from '@react-navigation/native';
 
 const RuskContext = React.createContext();
 
@@ -16,7 +17,7 @@ const RuskProvider = ({children}) => {
   const [lastClickTime, setLastClickTime] = useState(0);
   const [showCooldownModal, setShowCooldownModal] = useState(false);
   const [InviteId, setInviteId] = useState(null);
-
+  const [VerifyRef, setVerifyRef] = useState('Verify');
   useEffect(() => {
     const generatedUUID = uuid();
     // Split the UUID into parts
@@ -230,6 +231,24 @@ const RuskProvider = ({children}) => {
   // console.log('userChanged ', user);
   const [randomNumber, setRandomNumber] = useState(0);
   const [AppDownloadCoins, setAppDownloadCoins] = useState(0);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (userUID) {
+      database()
+        .ref(`Users/${userUID}`)
+        .on('value', snapshot => {
+          const dataFetch = snapshot.val();
+          if (dataFetch && dataFetch.InviteBy === null) {
+            navigation.navigate('Referral');
+          } else {
+            dataFetch && dataFetch.InviteBy.inviteStatus === true
+              ? navigation.navigate('Window')
+              : navigation.navigate('Referral');
+          }
+        });
+    }
+  }, [userUID]);
 
   useEffect(() => {
     // console.log('Empty UserInfo Running');
@@ -242,6 +261,12 @@ const RuskProvider = ({children}) => {
           setCoinWallet(dataFetch.Wallet.coins);
         });
       console.log('ON runnning ');
+
+      // {
+      //   userInfo.InviteBy === null
+      //     ? navigation.navigate('Window')
+      //     : navigation.navigate('Referral');
+      // }
 
       if (randomNumber > 0 || AppDownloadCoins > 0) {
         let numericCoinWallet = parseFloat(coinWallet);
@@ -319,6 +344,8 @@ const RuskProvider = ({children}) => {
         // updateUser,
         AppDownloadCoins,
         setAppDownloadCoins,
+        VerifyRef,
+        setVerifyRef,
       }}>
       {children}
     </RuskContext.Provider>
