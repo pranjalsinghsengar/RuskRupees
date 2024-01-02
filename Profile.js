@@ -33,12 +33,12 @@ const Profile = ({navigation, user}) => {
       await GoogleSignin.signOut();
       await navigation.navigate('Login');
       await setUserInfo(null);
+      setInviteId(null);
       setRemainingTime(null);
       setUserUID(null);
       setRandomNumber(0);
       setAppDownloadCoins(0);
       setCoinWallet(0);
-      setInviteId(null);
     } catch (error) {
       console.error(error);
     }

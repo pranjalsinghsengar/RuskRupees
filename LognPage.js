@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   Pressable,
+  Alert,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {FIREBASE_AUTH} from './fireConfig';
@@ -23,6 +24,7 @@ import {RuskContext} from './Context';
 import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import {borderRadius} from '@mui/system';
 
 // import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
 // import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
@@ -36,8 +38,15 @@ import database from '@react-native-firebase/database';
 
 const LognPage = ({navigation}) => {
   // const Stack = createNativeStackNavigator();
-  const {userInfo, coinWallet, setUserInfo, updateUser, InviteId, setUserUID} =
-    useContext(RuskContext);
+  const {
+    userInfo,
+    coinWallet,
+    setUserInfo,
+    updateUser,
+    InviteId,
+    userUID,
+    setUserUID,
+  } = useContext(RuskContext);
 
   const provider = new GoogleAuthProvider();
 
@@ -83,12 +92,14 @@ const LognPage = ({navigation}) => {
   // const handle = () => {
   //   navigation.navigate('Window');
   // };
+  const [loadingText, setloadingText] = useState(null);
 
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const {idToken, ...Info} = await GoogleSignin.signIn(); // Use object destructuring to get idToken and the rest of the Info
       console.log('Step 1 Done');
+      setloadingText('Fetching Your data...');
 
       // Create a Google credential with the token
       const googleCredential = await auth.GoogleAuthProvider.credential(
@@ -158,12 +169,14 @@ const LognPage = ({navigation}) => {
       }
       setUserUID(uid);
       console.log('Start Navigating...');
+      setloadingText('Almost Done');
 
       // console.log('Google Sign-In successful');
       // console.log('googleCredential ', googleCredential);
       // console.log('>>>uid ', uid);
       // console.log('>>>user ', userInfo);
     } catch (error) {
+      Alert.alert(error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -173,6 +186,14 @@ const LognPage = ({navigation}) => {
       } else {
         // some other error happened
       }
+    }
+    if (userUID) {
+      await setloadingText('Done');
+      setTimeout(() => {
+        setloadingText(null);
+      }, 5000);
+    } else {
+      setloadingText(null);
     }
   };
 
@@ -241,15 +262,30 @@ const LognPage = ({navigation}) => {
               />
               <Text style={styles.buttonText}>Sign In with Google</Text>
             </TouchableOpacity> */}
-
-            <GoogleSigninButton
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={
-                () => handleGoogleSignIn()
-                // .then(() => setsuccessFully(true))
-              }
-            />
+            <View
+              style={{
+                backgroundColor: '#3498db',
+                padding: 8,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {loadingText === null ? (
+                <GoogleSigninButton
+                  size={GoogleSigninButton.Size.Wide}
+                  color={GoogleSigninButton.Color.Dark}
+                  // backgroundColor={GoogleSigninButton.backgroundColor.Dark}
+                  onPress={
+                    () => handleGoogleSignIn()
+                    // .then(() => setsuccessFully(true))
+                  }
+                />
+              ) : (
+                <Text style={{fontSize: 20, color: 'white'}}>
+                  {loadingText}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
       </ImageBackground>

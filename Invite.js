@@ -33,7 +33,7 @@ const Invite = () => {
           borderRadius: 15,
           overflow: 'hidden',
           width: '90%',
-          flex: 1 / 2,
+          flex: 1 / 3,
           // padding: 15,
           borderColor: 'white',
           borderWidth: 1,
@@ -110,7 +110,9 @@ const Invite = () => {
         </Text>
       </TouchableOpacity>
 
-      <View
+      {/* history */}
+
+      {/* <View
         style={{
           width: '80%',
           marginVertical: 50,
@@ -122,7 +124,7 @@ const Invite = () => {
         <Text>HISTORY</Text>
 
         
-      </View>
+      </View> */}
     </ImageBackground>
   );
 };

@@ -239,16 +239,20 @@ const RuskProvider = ({children}) => {
         .ref(`Users/${userUID}`)
         .on('value', snapshot => {
           const dataFetch = snapshot.val();
-          if (dataFetch && dataFetch.InviteBy === null) {
-            navigation.navigate('Referral');
-          } else {
-            dataFetch && dataFetch.InviteBy.inviteStatus === true
-              ? navigation.navigate('Window')
-              : navigation.navigate('Referral');
-          }
+          console.log(
+            '======>>>>  inviteStatus ',
+            dataFetch && dataFetch.InviteBy.inviteStatus,
+          );
+          // if (dataFetch && dataFetch.InviteBy === null) {
+          //   navigation.navigate('Referral');
+          // } else {
+          dataFetch && dataFetch.InviteBy.inviteStatus === true
+            ? navigation.navigate('Window')
+            : navigation.navigate('Referral');
+          // }
         });
     }
-  }, [userUID]);
+  }, [userUID, navigation]);
 
   useEffect(() => {
     // console.log('Empty UserInfo Running');

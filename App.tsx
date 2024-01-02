@@ -27,6 +27,8 @@ import Window from './Window';
 import Profile from './Profile';
 import Invite from './Invite';
 import Referral from './Referral';
+import Share from './Sharring';
+import Sharring from './Sharring';
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -67,6 +69,11 @@ function App(): React.JSX.Element {
           <Stack.Screen
             name="Invite"
             component={Invite}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Sharring"
+            component={Sharring}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

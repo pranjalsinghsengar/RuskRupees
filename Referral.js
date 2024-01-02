@@ -137,7 +137,9 @@ const Referral = ({navigation}) => {
             <Text style={{color: 'green', marginVertical: 10}}>
               {VerifyRef}
             </Text>
-            <TouchableOpacity style={styles.BtnStyle}>
+            <TouchableOpacity
+              style={styles.BtnStyle}
+              onPress={() => navigation.navigate('Window')}>
               <Text>Next</Text>
             </TouchableOpacity>
           </View>

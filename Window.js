@@ -4,6 +4,7 @@ import FlipCards from './FlipCards';
 import {Modal} from '@mui/base';
 import {RuskContext} from './Context';
 import Invite from './Invite';
+import Sharring from './Sharring';
 
 const Window = ({navigation, setOpenprofile}) => {
   const {
@@ -140,6 +141,7 @@ const Window = ({navigation, setOpenprofile}) => {
 
       {currentTab === 1 && <FlipCards />}
       {currentTab === 2 && <Invite />}
+      {currentTab === 3 && <Sharring />}
 
       <Modal
         transparent={true}
