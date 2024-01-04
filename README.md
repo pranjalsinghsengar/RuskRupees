@@ -1,6 +1,12 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+![WhatsApp Image 2024-01-04 at 09 13 38_21397894](https://github.com/pranjalsinghsengar/RuskRupees/assets/67635283/94bf0108-4710-40e4-8431-ca46ffcdb88e)
+![WhatsApp Image 2024-01-04 at 09 18 31_06588f32](https://github.com/pranjalsinghsengar/RuskRupees/assets/67635283/f11694fd-008b-48bb-af73-69f7f92d0f71)
+![WhatsApp Image 2024-01-04 at 09 18 32_15329c62](https://github.com/pranjalsinghsengar/RuskRupees/assets/67635283/a67e3402-98a7-4a30-88f4-44a08c27d3ad)
+
 # Getting Started
+
+
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
