@@ -176,17 +176,23 @@ const LognPage = ({navigation}) => {
       // console.log('>>>uid ', uid);
       // console.log('>>>user ', userInfo);
     } catch (error) {
-      Alert.alert(error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
+        // sign in was cancelled
+        Alert.alert('cancelled');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
+        // operation in progress already
+        Alert.alert('in progress');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
+        Alert.alert('play services not available or outdated');
       } else {
-        // some other error happened
+        Alert.alert('Something went wrong', error.toString());
+        console.log(error);
+        this.setState({
+          error,
+        });
       }
     }
+    
     if (userUID) {
       await setloadingText('Done');
       setTimeout(() => {
