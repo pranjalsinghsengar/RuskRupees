@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "744554475013-6k0lo9avu4obhka2cmr9m6ugh1nuh14e.apps.googleusercontent.com",
+          "client_id": "744554475013-d7p08ju36t28dt9qffqkeoqt0404i9ue.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ruskrupees",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "3ed9d18325219fc4b5c8ac43c9fde6a57ed60c97"
           }
         },
         {

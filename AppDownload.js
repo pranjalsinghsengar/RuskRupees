@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import Download from './Download';
 import DownloadCard from './DownloadCard';
@@ -24,6 +24,10 @@ const AppDownload = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  const moneyHandler = () => {
+    setAppDownloadCoins(numericRupess);
+  };
+
   // const handleDownloadPress = async () => {
   //   // Open the Onboarding card
   //   setShowOnboarding(true);
@@ -35,6 +39,10 @@ const AppDownload = () => {
   //   // Close the Onboarding card
   //   setShowOnboarding(false);
   // };
+  const teenpatti_IMAGE = require('./assets/AppImages/teenpatti.jpg');
+  const TeenpattiMaster_IMAGE = require('./assets/AppImages/TeenpattiMaster.jpg');
+  const TRURUS_IMAGE = require('./assets/AppImages/TRURUS.jpg');
+
   return (
     <View>
       {/* <Text>sdfsdf{formatTime(timer)}</Text> */}
@@ -45,8 +53,48 @@ const AppDownload = () => {
         timer={timer}
         formatTime={formatTime}
         Teenpatti="https://h25.in/gold/us8t7"
+        ImgSrc={teenpatti_IMAGE}
+        AppName="teenpatti"
         // setShowOnboarding={setShowOnboarding}
       />
+      <DownloadCard
+        isFlipped={isFlipped}
+        Rupess="3.2"
+        Sign="₹"
+        timer={timer}
+        formatTime={formatTime}
+        Teenpatti="https://h27.in/m/us8t7"
+        ImgSrc={TeenpattiMaster_IMAGE}
+        AppName="teenpatti Master"
+        // setShowOnboarding={setShowOnboarding}
+      />
+      <DownloadCard
+        isFlipped={isFlipped}
+        Rupess="3.2"
+        Sign="₹"
+        timer={timer}
+        formatTime={formatTime}
+        Teenpatti="https://h25.in/gold/us8t7"
+        ImgSrc={TRURUS_IMAGE}
+        AppName="taurus"
+
+        // setShowOnboarding={setShowOnboarding}
+      />
+      <View style={{alignItems: 'center'}}>
+        <TouchableOpacity
+          style={{
+            padding: 15,
+            paddingHorizontal: 40,
+            backgroundColor: 'green',
+            borderRadius: 15,
+            marginTop: 10,
+          }}
+          onPress={moneyHandler}>
+          <Text style={{color: 'white', fontWeight: '600', fontSize: 20}}>
+            Steps
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

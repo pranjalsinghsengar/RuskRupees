@@ -231,6 +231,7 @@ const RuskProvider = ({children}) => {
   // console.log('userChanged ', user);
   const [randomNumber, setRandomNumber] = useState(0);
   const [AppDownloadCoins, setAppDownloadCoins] = useState(0);
+  const [WhichAppDownloaded, setWhichAppDownloaded] = useState('');
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -254,6 +255,8 @@ const RuskProvider = ({children}) => {
     }
   }, [userUID, navigation]);
 
+  const currentTime =  new Date().getTime();
+
   useEffect(() => {
     // console.log('Empty UserInfo Running');
     if (userUID) {
@@ -263,6 +266,7 @@ const RuskProvider = ({children}) => {
           const dataFetch = snapshot.val();
           setUserInfo(dataFetch);
           setCoinWallet(dataFetch.Wallet.coins);
+
         });
       console.log('ON runnning ');
 
@@ -271,22 +275,33 @@ const RuskProvider = ({children}) => {
       //     ? navigation.navigate('Window')
       //     : navigation.navigate('Referral');
       // }
+      console.log('WhichAppDownloaded', WhichAppDownloaded);
 
-      if (randomNumber > 0 || AppDownloadCoins > 0) {
+      if (randomNumber > 0 || AppDownloadCoins > 0 || WhichAppDownloaded) {
         let numericCoinWallet = parseFloat(coinWallet);
         let numericRandomNumber = parseFloat(randomNumber);
         let numericAppDownloadCoins = parseFloat(AppDownloadCoins);
 
-        // let UpdateCoins = coinWallet + randomNumber + AppDownloadCoins;
         let UpdateCoins =
           numericCoinWallet + numericRandomNumber + numericAppDownloadCoins;
 
+        // Specify the number of decimal places you want, for example, 2
+        let roundedUpdateCoins = UpdateCoins.toFixed(2);
+
+        // Convert it back to a floating-point number if needed
+        let finalUpdateCoins = parseFloat(roundedUpdateCoins);
+
+        // Now finalUpdateCoins contains the rounded-off value
         database().ref(`Users/${userUID}/Wallet`).update({
-          coins: UpdateCoins,
+          coins: finalUpdateCoins,
+        });
+        database().ref(`Users/${userUID}/AppDownload`).push({
+          Apps: WhichAppDownloaded,
+          timestamp: currentTime,
         });
         console.log(
           'UpdateCoins',
-          UpdateCoins,
+          finalUpdateCoins,
           'AppDownloadCoins ',
           AppDownloadCoins,
         );
@@ -297,15 +312,18 @@ const RuskProvider = ({children}) => {
           'AppDownloadCoins',
           numericAppDownloadCoins,
         );
-        console.log('Updated Coins', UpdateCoins);
+        console.log('Updated Coins', finalUpdateCoins);
         console.log('updated Coins Done');
+        // console.log()
+        console.log('WhichAppDownloaded', WhichAppDownloaded);
 
         // Doing NulL
         setAppDownloadCoins(0);
+        setWhichAppDownloaded('');
       }
       return () => database().ref(`Users/${userUID}`).off('value');
     }
-  }, [userUID, randomNumber, AppDownloadCoins]);
+  }, [userUID, randomNumber, AppDownloadCoins, WhichAppDownloaded]);
 
   // console.log('userUID', userUID);
   // console.log('=>userInfo', userInfo);
@@ -320,6 +338,14 @@ const RuskProvider = ({children}) => {
   //  Save the Update the Coin when it Fliped
 
   // useEffect(() => {});
+
+  const timestamp = 1704572325850;
+const date = new Date(timestamp);
+
+console.log("date", date);
+
+
+
   return (
     <RuskContext.Provider
       value={{
@@ -343,6 +369,7 @@ const RuskProvider = ({children}) => {
         userUID,
         setUserUID,
         InviteId,
+        setInviteId,
         randomNumber,
         setRandomNumber,
         // updateUser,
@@ -350,6 +377,8 @@ const RuskProvider = ({children}) => {
         setAppDownloadCoins,
         VerifyRef,
         setVerifyRef,
+        WhichAppDownloaded,
+        setWhichAppDownloaded,
       }}>
       {children}
     </RuskContext.Provider>

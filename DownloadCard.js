@@ -13,8 +13,8 @@ import OnboardingScreens from './OnboardingScreens';
 import Swiper from 'react-native-swiper';
 import {RuskContext} from './Context';
 
-const DownloadCard = ({Sign, isFlipped, Rupess, timer, Teenpatti}) => {
-  const {setAppDownloadCoins} = useContext(RuskContext);
+const DownloadCard = ({Sign,AppName, ImgSrc, isFlipped, Rupess, timer, Teenpatti}) => {
+  const {setAppDownloadCoins, setWhichAppDownloaded} = useContext(RuskContext);
   const [Texting, setTexting] = useState(false);
   const handleDownloadPress = async () => {
     // const playStoreLink = {Teenpatti};
@@ -40,13 +40,13 @@ const DownloadCard = ({Sign, isFlipped, Rupess, timer, Teenpatti}) => {
       setCurrentIndex(currentIndex + 1);
     }
     if (currentIndex === 2) {
+      setWhichAppDownloaded(AppName)
       await Linking.openURL(Teenpatti);
-      setAppDownloadCoins(numericRupess);
+      // setAppDownloadCoins(numericRupess);
       setShowOnboarding(false);
       setTexting(true);
     }
   };
-
   const handleBack = () => {
     // Logic to handle the back button click
     if (currentIndex > 0) {
@@ -70,12 +70,16 @@ const DownloadCard = ({Sign, isFlipped, Rupess, timer, Teenpatti}) => {
         style={{
           width: 50,
           height: 50,
-          backgroundColor: 'red',
-          borderRadius: 10,
+          // backgroundColor: 'red',
+          borderRadius: 8,
+          overflow: 'hidden',
         }}>
         <Image
-          source={require('./assets/teenpatti.jpg')}
-          style={{width: '100%', height: '100%'}}
+          source={ImgSrc}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
         />
       </View>
 
@@ -87,7 +91,7 @@ const DownloadCard = ({Sign, isFlipped, Rupess, timer, Teenpatti}) => {
           gap: 20,
         }}>
         {Texting ? (
-          <Text>Updating Soon</Text>
+          <Text>Complete All steps</Text>
         ) : (
           <>
             <Text style={{fontSize: 30}}>

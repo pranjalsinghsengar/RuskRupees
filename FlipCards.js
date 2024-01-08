@@ -155,16 +155,7 @@ const FlipCards = ({navigation}) => {
         remainingTime={remainingTime}
         setCoinWallet={setCoinWallet}
       />
-      <AppDownload
-        isFlipped={isFlipped}
-        remainingTime={remainingTime}
-        setCoinWallet={setCoinWallet}
-      />
-      <AppDownload
-        isFlipped={isFlipped}
-        remainingTime={remainingTime}
-        setCoinWallet={setCoinWallet}
-      />
+     
     </ScrollView>
   );
 };
