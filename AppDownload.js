@@ -6,7 +6,7 @@ import OnboardingScreens from './OnboardingScreens';
 import {RuskContext} from './Context';
 
 const AppDownload = () => {
-  const {isFlipped, remainingTime} = useContext(RuskContext);
+  const {isFlipped, remainingTime,setAppDownloadCoins} = useContext(RuskContext);
 
   const [timer, settimer] = useState(null);
 
@@ -23,6 +23,10 @@ const AppDownload = () => {
     const seconds = Math.floor((time % 60000) / 1000);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
+
+  const PayRupess = 3.2
+
+  let numericRupess = parseFloat(PayRupess);
 
   const moneyHandler = () => {
     setAppDownloadCoins(numericRupess);
@@ -48,7 +52,7 @@ const AppDownload = () => {
       {/* <Text>sdfsdf{formatTime(timer)}</Text> */}
       <DownloadCard
         isFlipped={isFlipped}
-        Rupess="3.2"
+        Rupess={PayRupess}
         Sign="₹"
         timer={timer}
         formatTime={formatTime}
@@ -59,7 +63,8 @@ const AppDownload = () => {
       />
       <DownloadCard
         isFlipped={isFlipped}
-        Rupess="3.2"
+        Rupess={PayRupess + 1}
+
         Sign="₹"
         timer={timer}
         formatTime={formatTime}
@@ -70,7 +75,8 @@ const AppDownload = () => {
       />
       <DownloadCard
         isFlipped={isFlipped}
-        Rupess="3.2"
+        Rupess={PayRupess - 0.5}
+
         Sign="₹"
         timer={timer}
         formatTime={formatTime}
