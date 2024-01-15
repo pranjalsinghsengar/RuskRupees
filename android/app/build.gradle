@@ -84,6 +84,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resConfigs "en", "fr", "es" // change this line by the languages you support within your app.
     }
     signingConfigs {
         release {
@@ -110,13 +111,23 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-             debuggable true
+             debuggable false
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             // signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
+            // shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // minifyEnabled false
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        
+        
+        }
+    }
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 }
