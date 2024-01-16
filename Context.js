@@ -255,7 +255,7 @@ const RuskProvider = ({children}) => {
     }
   }, [userUID, navigation]);
 
-  const currentTime =  new Date().getTime();
+  const currentTime = new Date().getTime();
 
   useEffect(() => {
     // console.log('Empty UserInfo Running');
@@ -266,7 +266,6 @@ const RuskProvider = ({children}) => {
           const dataFetch = snapshot.val();
           setUserInfo(dataFetch);
           setCoinWallet(dataFetch.Wallet.coins);
-
         });
       console.log('ON runnning ');
 
@@ -340,11 +339,11 @@ const RuskProvider = ({children}) => {
   // useEffect(() => {});
 
   const timestamp = 1704572325850;
-const date = new Date(timestamp);
+  const date = new Date(timestamp);
 
-console.log("date", date);
+  console.log('date', date);
 
-
+  // const [showOnboarding, setShowOnboarding] = useState(false);
 
   return (
     <RuskContext.Provider

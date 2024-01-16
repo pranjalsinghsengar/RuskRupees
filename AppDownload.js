@@ -1,12 +1,22 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import Download from './Download';
 import DownloadCard from './DownloadCard';
 import OnboardingScreens from './OnboardingScreens';
 import {RuskContext} from './Context';
+import Swiper from 'react-native-swiper';
+import StepsSlide from './src/components/StepsSlide';
 
 const AppDownload = () => {
-  const {isFlipped, remainingTime,setAppDownloadCoins} = useContext(RuskContext);
+  const {isFlipped, remainingTime, setAppDownloadCoins} =
+    useContext(RuskContext);
 
   const [timer, settimer] = useState(null);
 
@@ -24,12 +34,13 @@ const AppDownload = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const PayRupess = 3.2
+  const PayRupess = 3.2;
 
   let numericRupess = parseFloat(PayRupess);
 
   const moneyHandler = () => {
-    setAppDownloadCoins(numericRupess);
+    setShowOnboarding(true);
+    // setAppDownloadCoins(numericRupess);
   };
 
   // const handleDownloadPress = async () => {
@@ -46,6 +57,8 @@ const AppDownload = () => {
   const teenpatti_IMAGE = require('./assets/AppImages/teenpatti.jpg');
   const TeenpattiMaster_IMAGE = require('./assets/AppImages/TeenpattiMaster.jpg');
   const TRURUS_IMAGE = require('./assets/AppImages/TRURUS.jpg');
+
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   return (
     <View>
@@ -64,7 +77,6 @@ const AppDownload = () => {
       <DownloadCard
         isFlipped={isFlipped}
         Rupess={PayRupess + 1}
-
         Sign="₹"
         timer={timer}
         formatTime={formatTime}
@@ -76,7 +88,6 @@ const AppDownload = () => {
       <DownloadCard
         isFlipped={isFlipped}
         Rupess={PayRupess - 0.5}
-
         Sign="₹"
         timer={timer}
         formatTime={formatTime}
@@ -101,6 +112,14 @@ const AppDownload = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* -------------------------------------------------------------------------------------------------- */}
+      {/* -------------------------------------------------------------------------------------------------- */}
+      {/* -------------------------------------------------------------------------------------------------- */}
+      <StepsSlide
+        showOnboarding={showOnboarding}
+        setShowOnboarding={setShowOnboarding}
+      />
     </View>
   );
 };

@@ -13,8 +13,19 @@ import OnboardingScreens from './OnboardingScreens';
 import Swiper from 'react-native-swiper';
 import {RuskContext} from './Context';
 
-const DownloadCard = ({Sign,AppName, ImgSrc, isFlipped, Rupess, timer, Teenpatti}) => {
-  const {setAppDownloadCoins, setWhichAppDownloaded} = useContext(RuskContext);
+const DownloadCard = ({
+  Sign,
+  AppName,
+  ImgSrc,
+  isFlipped,
+  Rupess,
+  timer,
+  Teenpatti,
+}) => {
+  const {
+    setAppDownloadCoins,
+    setWhichAppDownloaded,
+  } = useContext(RuskContext);
   const [Texting, setTexting] = useState(false);
   const handleDownloadPress = async () => {
     // const playStoreLink = {Teenpatti};
@@ -40,7 +51,7 @@ const DownloadCard = ({Sign,AppName, ImgSrc, isFlipped, Rupess, timer, Teenpatti
       setCurrentIndex(currentIndex + 1);
     }
     if (currentIndex === 2) {
-      setWhichAppDownloaded(AppName)
+      setWhichAppDownloaded(AppName);
       await Linking.openURL(Teenpatti);
       // setAppDownloadCoins(numericRupess);
       setShowOnboarding(false);
@@ -113,7 +124,9 @@ const DownloadCard = ({Sign,AppName, ImgSrc, isFlipped, Rupess, timer, Teenpatti
         )} */}
       </View>
       <Modal transparent={true} visible={showOnboarding} animationType="slide">
-        <View style={styles.modalContainer}>
+        <View
+          style={styles.modalContainer}
+          onTouchCancel={() => setShowOnboarding(false)}>
           <View style={[styles.modalContent, {width: '80%', height: 450}]}>
             {/* <View style={styles.container}> */}
             <Swiper
@@ -123,13 +136,25 @@ const DownloadCard = ({Sign,AppName, ImgSrc, isFlipped, Rupess, timer, Teenpatti
               showsPagination={false}>
               {/* Your three slides go here */}
               <View style={styles.slide}>
-                <Text>Slide 1</Text>
+                <Text>Download the APP</Text>
+                <Text>ऐप फ़ाइल डाउनलोड करें</Text>
+                <></>
+                <Text>Install the APP</Text>
+                <Text>ऐप इंस्टॉल करें</Text>
               </View>
               <View style={styles.slide}>
-                <Text>Slide 2</Text>
+                <Text>Open the app and login with you mobile number</Text>
+                <Text>ऐप खोलें और अपने मोबाइल नंबर से लॉगइन करें</Text>
               </View>
               <View style={styles.slide}>
-                <Text>Slide 3</Text>
+                <Text>
+                  After complete the app profile the money will transfer in 18
+                  hour
+                </Text>
+                <Text>
+                  ऐप प्रोफाइल पूरा करने के बाद 18 घंटे में पैसा ट्रांसफर हो
+                  जाएगा
+                </Text>
               </View>
             </Swiper>
 
