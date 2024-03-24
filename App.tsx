@@ -29,82 +29,19 @@ import Invite from './Invite';
 import Referral from './Referral';
 import Share from './Sharring';
 import Sharring from './Sharring';
+import Navigation from './src/routes/Navigation';
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
 
   return (
-    // <SafeAreaView>
-    // <StatusBar />
+    <SafeAreaView>
     <NavigationContainer>
       <RuskProvider>
-        {/* <View style={styles.ScrollC}> */}
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={LognPage}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Referral"
-            component={Referral}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Window"
-            component={Window}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{headerShown: false}}
-          />
-
-          <Stack.Screen
-            name="OnboardingScreens"
-            component={OnboardingScreens}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Invite"
-            component={Invite}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Sharring"
-            component={Sharring}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-        {/* {userInfo ? (
-        Openprofile ? (
-          <Profile userInfo={userInfo} coinWallet={coinWallet} />
-        ) : (
-          <Window
-            coinWallet={coinWallet}
-            setCoinWallet={setCoinWallet}
-            currentTab={currentTab}
-            setCurrentTab={setCurrentTab}
-            remainingTime={remainingTime}
-            setRemainingTime={setRemainingTime}
-            lastClickTime={lastClickTime}
-            setLastClickTime={setLastClickTime}
-            setShowCooldownModal={setShowCooldownModal}
-            userInfo={userInfo}
-            setOpenprofile={setOpenprofile}
-          />
-        )
-      ) : (
-        <LognPage setUserInfo={setUserInfo} />
-      )} */}
-
-        {/* // </SafeAreaView> */}
-
-        {/* <OnboardingScreens /> */}
-        {/* </View> */}
+        <Navigation/>
       </RuskProvider>
     </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
